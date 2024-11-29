@@ -100,6 +100,11 @@ class TestCleaningRobot(TestCase):
         self.assertTrue(robot.recharge_led_on)
         self.assertFalse(robot.cleaning_system_on)
 
+    def test_rotate_n_times(self):
+        robot=CleaningRobot()
+        robot.initialize_robot()
+        robot.rotate_n_times(3)
+        self.assertEqual(robot.robot_status(), "(0,0,W)")
 
 
 
