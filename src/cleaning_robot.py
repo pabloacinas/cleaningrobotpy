@@ -131,6 +131,23 @@ class CleaningRobot:
             GPIO.output(self.CLEANING_SYSTEM_PIN, GPIO.HIGH)
             self.cleaning_system_on = True
 
+    def rotate_n_times(self, n):
+        for i in range(n):
+            self.activate_rotation_motor('r') #Always rotate right
+            if self.heading == self.N:
+                self.heading = self.E
+            elif self.heading == self.E:
+                self.heading = self.S
+            elif self.heading == self.S:
+                self.heading = self.W
+            elif self.heading == self.W:
+                self.heading = self.N
+
+        if n % 4 == 0: #If it does a full loop it means its multiple of 4
+            return f"{self.robot_status()} LOOP"
+        else:
+            return self.robot_status()
+
     def activate_wheel_motor(self) -> None:
         """
         Let the robot move forward by activating its wheel motor
@@ -175,24 +192,6 @@ class CleaningRobot:
         GPIO.output(self.BIN2, GPIO.LOW)
         GPIO.output(self.PWMB, GPIO.LOW)
         GPIO.output(self.STBY, GPIO.LOW)
-
-    def rotate_n_times(self, n):
-        for i in range(n):
-            self.activate_rotation_motor('r') #Always rotate right
-            if self.heading == self.N:
-                self.heading = self.E
-            elif self.heading == self.E:
-                self.heading = self.S
-            elif self.heading == self.S:
-                self.heading = self.W
-            elif self.heading == self.W:
-                self.heading = self.N
-
-        if n % 4 == 0: #If it does a full loop it means its multiple of 4
-            return f"{self.robot_status()} LOOP"
-        else:
-            return self.robot_status()
-
 
 class CleaningRobotError(Exception):
     pass

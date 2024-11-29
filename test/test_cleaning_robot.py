@@ -9,7 +9,6 @@ from src.cleaning_robot import CleaningRobotError
 
 class TestCleaningRobot(TestCase):
 
-
     def test_initialize_robot(self):
         robot=CleaningRobot()
         robot.initialize_robot()
