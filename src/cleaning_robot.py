@@ -73,6 +73,8 @@ class CleaningRobot:
         return f'({self.pos_x},{self.pos_y},{self.heading})'
 
     def execute_command(self, command: str) -> str:
+        if self.ibs.get_charge_left() < 10:
+            return "!" + self.robot_status()
         if command == 'f': # Move the robot forward
             if self.obstacle_found():
                 #if there is an obstacle return the robot status without moving
