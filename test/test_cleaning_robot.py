@@ -49,6 +49,12 @@ class TestCleaningRobot(TestCase):
         robot=CleaningRobot()
         self.assertRaises(CleaningRobotError, robot.manage_cleaning_system)
 
+    def test_robot_move_forward(self):
+        robot = CleaningRobot()
+        robot.initialize_robot()
+        robot.execute_command('f')
+        self.assertEqual(robot.robot_status(), "(0,1,N)")
+
 
 
 
