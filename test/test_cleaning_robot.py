@@ -49,11 +49,23 @@ class TestCleaningRobot(TestCase):
         robot=CleaningRobot()
         self.assertRaises(CleaningRobotError, robot.manage_cleaning_system)
 
-    def test_robot_move_forward(self):
+    def test_execute_command_forward(self):
         robot = CleaningRobot()
         robot.initialize_robot()
         robot.execute_command('f')
         self.assertEqual(robot.robot_status(), "(0,1,N)")
+
+    def test_execute_command_right(self):
+        robot = CleaningRobot()
+        robot.initialize_robot()
+        robot.execute_command('r')
+        self.assertEqual(robot.robot_status(), "(0,0,E)")
+
+    def test_execute_command_left(self):
+        robot = CleaningRobot()
+        robot.initialize_robot()
+        robot.execute_command('l')
+        self.assertEqual(robot.robot_status(), "(0,0,W)")
 
 
 
