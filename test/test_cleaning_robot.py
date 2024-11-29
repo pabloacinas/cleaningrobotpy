@@ -8,7 +8,7 @@ from src.cleaning_robot import CleaningRobot
 
 class TestCleaningRobot(TestCase):
 
-    def test_inicialize_robot(self, mock_gpio):
+    def test_initialize_robot(self):
         robot=CleaningRobot()
         robot.initialize_robot()
         self.assertEqual(robot.pos_x, 0)
