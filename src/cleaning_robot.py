@@ -73,16 +73,37 @@ class CleaningRobot:
         return f'({self.pos_x},{self.pos_y},{self.heading})'
 
     def execute_command(self, command: str) -> str:
-        if command == self.FORWARD:
+        if command == 'f': # Move the robot forward
             self.activate_wheel_motor()
-            if self.heading == self.N:
+            if self.heading == self.N: # Move the robot forward
                 self.pos_y += 1
-            elif self.heading == self.S:
+            elif self.heading == self.S: # Move the robot backward
                 self.pos_y -= 1
-            elif self.heading == self.E:
+            elif self.heading == self.E: # Move the robot right
                 self.pos_x += 1
-            elif self.heading == self.W:
+            elif self.heading == self.W: # Move the robot left
                 self.pos_x -= 1
+        elif command == 'r':
+            self.activate_rotation_motor(self.RIGHT) # Rotate the robot right
+            if self.heading == self.N: # Change the heading of the robot to the right
+                self.heading = self.E
+            elif self.heading == self.E:
+                self.heading = self.S
+            elif self.heading == self.S:
+                self.heading = self.W
+            elif self.heading == self.W:
+                self.heading = self.N
+        elif command == 'l':
+            self.activate_rotation_motor(self.LEFT) # Rotate the robot left
+            if self.heading == self.N: # Change the heading of the robot to the left
+                self.heading = self.W
+            elif self.heading == self.W:
+                self.heading = self.S
+            elif self.heading == self.S:
+                self.heading = self.E
+            elif self.heading == self.E:
+                self.heading = self.N
+        return self.robot_status()
 
     def obstacle_found(self) -> bool:
         # To be implemented
