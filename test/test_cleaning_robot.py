@@ -89,6 +89,14 @@ class TestCleaningRobot(TestCase):
         robot.execute_command('f')
         self.assertEqual(robot.robot_status(), "(0,1,N)")
 
+    @patch.object(IBS, 'get_charge_left')
+    def test_execute_command_low_battery(self, mock_ibs: Mock):
+        mock_ibs.return_value = 9
+        robot = CleaningRobot()
+        robot.initialize_robot()
+        result = robot.execute_command('f')
+        self.assertEqual(result, "!(0,0,N)")
+
 
 
 
