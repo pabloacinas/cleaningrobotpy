@@ -106,6 +106,12 @@ class TestCleaningRobot(TestCase):
         robot.rotate_n_times(3)
         self.assertEqual(robot.robot_status(), "(0,0,W)")
 
+    def test_rotate_n_times_loop(self):
+        robot=CleaningRobot()
+        robot.initialize_robot()
+        result=robot.rotate_n_times(4)
+        self.assertEqual(result, "(0,0,N) LOOP")
+
 
 
 
