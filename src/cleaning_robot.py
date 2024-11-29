@@ -74,15 +74,20 @@ class CleaningRobot:
 
     def execute_command(self, command: str) -> str:
         if command == 'f': # Move the robot forward
-            self.activate_wheel_motor()
-            if self.heading == self.N: # Move the robot forward
-                self.pos_y += 1
-            elif self.heading == self.S: # Move the robot backward
-                self.pos_y -= 1
-            elif self.heading == self.E: # Move the robot right
-                self.pos_x += 1
-            elif self.heading == self.W: # Move the robot left
-                self.pos_x -= 1
+            if self.obstacle_found():
+                #if there is an obstacle return the robot status without moving
+                return self.robot_status()+ f'({self.pos_x},{self.pos_y+1})'
+            else:
+                #if there is no obstacle move the robot forward
+                self.activate_wheel_motor()
+                if self.heading == self.N: # Move the robot forward
+                    self.pos_y += 1
+                elif self.heading == self.S: # Move the robot backward
+                    self.pos_y -= 1
+                elif self.heading == self.E: # Move the robot right
+                    self.pos_x += 1
+                elif self.heading == self.W: # Move the robot left
+                    self.pos_x -= 1
         elif command == 'r':
             self.activate_rotation_motor(self.RIGHT) # Rotate the robot right
             if self.heading == self.N: # Change the heading of the robot to the right
@@ -106,8 +111,7 @@ class CleaningRobot:
         return self.robot_status()
 
     def obstacle_found(self) -> bool:
-        # To be implemented
-        pass
+        return GPIO.input(self.INFRARED_PIN) == GPIO.HIGH
 
     def manage_cleaning_system(self) -> None:
         if self.ibs.get_charge_left() < 0 or self.ibs.get_charge_left() > 100:

@@ -72,8 +72,16 @@ class TestCleaningRobot(TestCase):
         mock_input.return_value = True
         robot = CleaningRobot()
         robot.initialize_robot()
+        result=robot.execute_command('f')
+        self.assertEqual(result, "(0,0,N)(0,1)") #if robot detects an obstacle, it should not move
+
+    @patch.object(GPIO, 'input') #infrared sensor
+    def test_execute_command_forward_without_obstacle(self, mock_input: Mock):
+        mock_input.return_value = False
+        robot = CleaningRobot()
+        robot.initialize_robot()
         robot.execute_command('f')
-        self.assertEqual(robot.robot_status(), "(0,0,N),(0,1)") #if robot detects an obstacle, it should not move
+        self.assertEqual(robot.robot_status(), "(0,1,N)")
 
 
 
