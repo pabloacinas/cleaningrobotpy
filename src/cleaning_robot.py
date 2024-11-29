@@ -74,6 +74,8 @@ class CleaningRobot:
 
     def execute_command(self, command: str) -> str:
         if self.ibs.get_charge_left() < 10:
+            self.cleaning_system_on = False
+            self.recharge_led_on = True
             return "!" + self.robot_status()
         if command == 'f': # Move the robot forward
             if self.obstacle_found():

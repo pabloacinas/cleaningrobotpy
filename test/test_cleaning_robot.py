@@ -90,12 +90,17 @@ class TestCleaningRobot(TestCase):
         self.assertEqual(robot.robot_status(), "(0,1,N)")
 
     @patch.object(IBS, 'get_charge_left')
-    def test_execute_command_low_battery(self, mock_ibs: Mock):
+    @patch.object(GPIO, 'output') #recharge led and cleaning system
+    def test_execute_command_low_battery(self,mock_output: Mock, mock_ibs: Mock):
         mock_ibs.return_value = 9
         robot = CleaningRobot()
         robot.initialize_robot()
-        result = robot.execute_command('f')
+        result=robot.execute_command('f')
         self.assertEqual(result, "!(0,0,N)")
+        self.assertTrue(robot.recharge_led_on)
+        self.assertFalse(robot.cleaning_system_on)
+
+
 
 
 
