@@ -21,13 +21,14 @@ class TestCleaningRobot(TestCase):
         status=robot.robot_status()
         self.assertEqual(status, '(0,0,N)')
 
+    @patch.object(IBS, 'get_charge_left')
     @patch.object(GPIO, 'output')
-    def test_turn_on_led_and_turn_off_cleaning_system_when_battery_below_10(self, mock_output):
+    def test_turn_on_led_and_turn_off_cleaning_system_when_battery_below_10(self, mock_output: Mock, mock_ibs: Mock):
+        mock_ibs.return_value = 5
         robot=CleaningRobot()
-        robot.initialize_robot()
-        robot.ibs.get_charge_left.return_value = 9
         robot.manage_cleaning_system()
-        mock_output.assert_called_once_with(robot.RECHARGE_LED_PIN, GPIO.HIGH)
+        mock_output.assert_has_calls([call(robot.RECHARGE_LED_PIN, GPIO.HIGH), call(robot.CLEANING_SYSTEM_PIN, GPIO.LOW)])
+        self.assertTrue(robot.recharge_led_on)
         self.assertFalse(robot.cleaning_system_on)
 
 
